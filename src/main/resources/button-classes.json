@@ -1,0 +1,34 @@
+[
+    {
+		"Comment": "Don't delete or rename, needed by UXMenu.",
+        "Name": "default",
+        "BackgroundColor": "#39c0ce",
+        "BorderColor":  "#39c0ce",
+        "FontColor":  "#FFFFFF",
+        "ActiveBackgroundColor":  "#DF5724",
+        "ActiveBorderColor":  "#00adc0",
+        "ActiveFontColor":  "#FFFFFF",
+        "BorderRoundness":  "5",
+        "BorderSize":  "2",
+        "HoverBorderSize":  "6"
+    },
+    {
+		"Comment": "Don't delete or rename, needed by UXMenu.",
+		"Name": "disabled",
+        "BackgroundColor": "#39c0ce",
+		"FontColor":  "#A9A9A9",
+		"ActiveFontColor":  "#A9A9A9",
+		"HoverBorderSize":  "2"
+    },
+	{	"Name": "label",
+        "BackgroundColor": "#39c0ce",
+        "BorderColor":  "#39c0ce",
+        "FontColor":  "#FFFFFF",
+        "ActiveBackgroundColor":  "#DF5724",
+        "ActiveBorderColor":  "#F7864A",
+        "ActiveFontColor":  "#FFFFFF",
+        "BorderRoundness":  "0",
+        "BorderSize":  "0",
+        "HoverBorderSize":  "0"
+    }
+]

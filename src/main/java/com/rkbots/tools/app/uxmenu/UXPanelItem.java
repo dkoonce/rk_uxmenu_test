@@ -1,0 +1,233 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.rkbots.tools.app.uxmenu;
+
+import com.rkbots.tools.app.uxmenu.slidinglayout.SLAnimator;
+
+import java.awt.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+/**
+ * @author josh
+ */
+public abstract class UXPanelItem extends javax.swing.JPanel {
+
+	//public JLabel label = new JLabel();
+
+	String defaultMenuAction = "";
+	//boolean drawBasic=true;
+
+	public Runnable getAction() {
+		return action;
+	}
+
+
+	boolean actionEnabled = false;
+	private Runnable action;
+
+	private int execsRunning = 0;
+
+	String refName = "";
+	String script = "";
+
+	public String getDefaultMenuAction() {
+		return defaultMenuAction;
+	}
+
+	public void setDefaultMenuAction(String defaultMenuAction) {
+		this.defaultMenuAction = defaultMenuAction;
+	}
+
+	public UXPanelItem() {
+		this("");
+	}
+
+	public UXPanelItem(String refName) {
+
+		setOpaque(false);
+		setLayout(new BorderLayout());
+
+		this.refName = refName;
+		//     label.setText(defaultText);
+
+//        add(label, BorderLayout.CENTER);
+	}
+
+	public String getRefName() {
+		return refName;
+	}
+
+	//    public String getRefScript() {
+//        return refScript;
+//    }
+	public void setScript(String script) {
+		this.script = script;
+	}
+
+	class StreamGobbler extends Thread {
+
+		InputStream is;
+		String type;
+
+		StreamGobbler(InputStream is, String type) {
+			this.is = is;
+			this.type = type;
+		}
+
+		@Override
+		public void run() {
+			try {
+				InputStreamReader isr = new InputStreamReader(is);
+				BufferedReader br = new BufferedReader(isr);
+				String line = null;
+				while ((line = br.readLine()) != null) {
+					System.out.println(type + ">" + line);
+				}
+			} catch (IOException ioe) {
+			}
+		}
+	}
+
+	public void runScript() {
+		if (!script.isEmpty()) {
+
+			System.out.println("  Running Script: " + script);
+			new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					try {
+						execsRunning++;
+//                        if (activeImageIcon != null) {
+//                            label.setIcon(activeImageIcon);
+//                        }
+						repaint();
+//                        System.out.println("Running: " + script);
+						Process process = Runtime.getRuntime().exec(script);
+						// exhaust input stream
+						// any error message?
+						StreamGobbler errorGobbler = new StreamGobbler(process.getErrorStream(), "ERROR");
+
+						// any output?
+						StreamGobbler outputGobbler = new StreamGobbler(process.getInputStream(), "OUTPUT");
+
+						// kick them off
+						errorGobbler.start();
+						outputGobbler.start();
+						// wait for completion
+						process.waitFor();
+
+					} catch (IOException ex) {
+						System.err.println("Cannot execute script:" + script);
+					} catch (InterruptedException ex) {
+						org.slf4j.LoggerFactory.getLogger(UXPanelItem.class).error(ex.getMessage(), ex);
+					}
+					if (execsRunning > 0) {
+						execsRunning--;
+					}
+					System.out.println("Script Done, runcount:" + execsRunning);
+//                    if (execsRunning == 0 && stdImageIcon != null) {
+//                        label.setIcon(stdImageIcon);
+//
+//                    }
+					repaint();
+				}
+			}).start();
+
+		}
+	}
+
+	public void setAction(Runnable action) {
+		this.action = action;
+	}
+
+	public void enableAction() {
+		actionEnabled = true;
+	}
+
+	public void disableAction() {
+		actionEnabled = false;
+	}
+
+
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+	}
+
+	public abstract void disposeItem();
+
+	public abstract void reinstateItem();
+
+	// -------------------------------------------------------------------------
+	// Tween Accessor
+	// -------------------------------------------------------------------------
+	public static class Accessor extends SLAnimator.ComponentAccessor {
+
+		public static final int BORDER_THICKNESS = 100;
+
+		@Override
+		public int getValues(Component target, int tweenType, float[] returnValues) {
+			UXPanelItem tp = (UXPanelItem) target;
+
+			int ret = super.getValues(target, tweenType, returnValues);
+			if (ret >= 0) {
+				return ret;
+			}
+
+			switch (tweenType) {
+				case BORDER_THICKNESS:
+					//returnValues[0] = tp.borderThickness;
+					return 1;
+				default:
+					return -1;
+			}
+		}
+
+		@Override
+		public void setValues(Component target, int tweenType, float[] newValues) {
+			UXPanelItem tp = (UXPanelItem) target;
+
+			super.setValues(target, tweenType, newValues);
+
+			switch (tweenType) {
+				case BORDER_THICKNESS:
+					//tp.borderThickness = Math.round(newValues[0]);
+					tp.repaint();
+					break;
+			}
+		}
+	}
+
+	/**
+	 * This method is called from within the constructor to initialize the form.
+	 * WARNING: Do NOT modify this code. The content of this method is always
+	 * regenerated by the Form Editor.
+	 */
+	// <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+	private void initComponents() {
+
+		setOpaque(false);
+
+		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+		this.setLayout(layout);
+		layout.setHorizontalGroup(
+				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+						.addGap(0, 268, Short.MAX_VALUE)
+		);
+		layout.setVerticalGroup(
+				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+						.addGap(0, 217, Short.MAX_VALUE)
+		);
+	}// </editor-fold>//GEN-END:initComponents
+
+
+	// Variables declaration - do not modify//GEN-BEGIN:variables
+	// End of variables declaration//GEN-END:variables
+}

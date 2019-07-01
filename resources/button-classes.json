@@ -1,0 +1,44 @@
+[
+    {
+		"Comment": "Don't delete or rename, needed by UXMenu.",
+        "Name": "default",
+        "BackgroundColor": "#0171BB",
+        "BorderColor":  "#58595B",
+        "FontColor":  "#FFFFFF",
+        "ActiveBackgroundColor":  "#F7864A",
+        "ActiveBorderColor":  "#58595B",
+        "ActiveFontColor":  "#FFFFFF",
+        "BorderRoundness":  "5",
+        "BorderSize":  "2",
+        "HoverBorderSize":  "6"
+    },
+    {
+		"Comment": "Don't delete or rename, needed by UXMenu.",
+		"Name": "disabled",
+        "BackgroundColor": "#004070",
+		"FontColor":  "#A9A9A9",
+		"ActiveFontColor":  "#A9A9A9"
+    },
+	{	"Name": "label",
+        "BackgroundColor": "#0171BB",
+        "BorderColor":  "#58595B",
+        "FontColor":  "#FFFFFF",
+        "ActiveBackgroundColor":  "#F7864A",
+        "ActiveBorderColor":  "#58595B",
+        "ActiveFontColor":  "#FFFFFF",
+        "BorderRoundness":  "0",
+        "BorderSize":  "0",
+        "HoverBorderSize":  "0"
+    },
+	{	"Name": "disabled-label",
+        "BackgroundColor": "#004070",
+        "BorderColor":  "#58595B",
+        "FontColor":  "#A9A9A9",
+        "ActiveBackgroundColor":  "#A9A9A9",
+        "ActiveBorderColor":  "#58595B",
+        "ActiveFontColor":  "#FFFFFF",
+        "BorderRoundness":  "0",
+        "BorderSize":  "0",
+        "HoverBorderSize":  "0"
+    }
+]
